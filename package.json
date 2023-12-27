@@ -1,6 +1,6 @@
 {
     "name": "nix-develop",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "main": "extension.js",
     "author": "Phyzait Lu",
     "engines": {
@@ -12,7 +12,15 @@
     "contributes": {
         "commands": [
             {
-                "command": "extension.nixdevelop",
+                "command": "extension.nixdevelopenable",
+                "title": "Enable nix develop"
+            },
+            {
+                "command": "extension.nixdevelopdisable",
+                "title": "Disable nix develop"
+            },
+            {
+                "command": "extension.nixdevelopupdate",
                 "title": "Update environmental variables with nix develop"
             }
         ]
