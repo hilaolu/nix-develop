@@ -1,0 +1,25 @@
+{
+    "name": "nix-develop",
+    "version": "1.0.0",
+    "main": "extension.js",
+    "author": "Phyzait Lu",
+    "engines": {
+        "vscode": "^1.0.0"
+    },
+    "activationEvents": [
+        "*"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.nixdevelop",
+                "title": "Update environmental variables with nix develop"
+            }
+        ]
+    },
+    "license": "MIT",
+    "repository": "https://github.com/hilaolu/nix-develop",
+    "devDependencies": {
+        "@vscode/vsce": "^2.22.0"
+    }
+}
