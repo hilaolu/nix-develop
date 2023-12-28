@@ -108,12 +108,12 @@ function getShellEnv() {
 }
 
 
-async function getEnv(cmd) {
+async function getEnv(cmd, env) {
     channel.appendLine("Running nix develop")
     return new Promise((resolve, reject) => {
         exec(cmd, {
             cwd: getWorkingFolder(),
-            // env: getShellEnv()
+            env: env
         }, (error, stdout, stderr) => {
             if (stdout.length > 0) {
                 channel.appendLine("Env parse ok")
@@ -141,23 +141,25 @@ function restoreProcessEnvWithEnvironment(e) {
 }
 
 function updateEnv(e) {
-    try {
-        for (const i of e) {
-            const [k, v] = i
-            process.env[k] = v
-            environment.replace(k, v)
-        }
-    } catch (err) {
-
+    for (let key in process.env) {
+        delete process.env[key]
+    }
+    environment.clear()
+    for (const i of e) {
+        const [k, v] = i
+        process.env[k] = v
+        environment.replace(k, v)
     }
 }
 
 const keyValueArray2Dict = (arr) => {
-    arr.reduce((acc, [key, value]) => {
-        acc[key] = value;
-        return acc;
-    }, {})
-}
+    const result = {};
+    arr.forEach(([key, value]) => {
+        result[key] = value;
+    });
+    return result;
+};
+
 
 function restoreEnv(e) {
     try {
@@ -172,7 +174,9 @@ function restoreEnv(e) {
 }
 
 async function getNixDevelopEnv() {
-    return await getEnv("nix develop --command bash -c 'env'")
+    let b = ctx.workspaceState.get('nixdevelopbackup')
+    let env = keyValueArray2Dict(b)
+    return await getEnv("nix develop --command bash -c 'env'", env)
 }
 
 async function getPlainEnv() {
